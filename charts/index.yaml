@@ -1,14 +1,25 @@
 apiVersion: v1
 entries:
+  deployment-aws:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-09-20T14:52:33.432167327+07:00"
+    description: A Helm chart for Kubernetes
+    digest: 245f36b873d778489bb1e8f4e17d5b475a5aaa2f81afcf0e86ee1cccd9400b0e
+    name: deployment-aws
+    type: application
+    urls:
+    - https://github.com/phamxuanduong/helm-charts/deployment-aws-0.1.0.tgz
+    version: 0.1.0
   deployment-harvester:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2024-09-20T14:22:55.15540333+07:00"
+    created: "2024-09-20T14:52:33.432720202+07:00"
     description: A Helm chart for Kubernetes
-    digest: b84fe6d14ebb750672cedb97db580b0359f97db79020733aa54a40a691d1d6f0
+    digest: f5a002359c9196e1258d530510ba1a5f1dc4e5852a14b5f26d3f4c2fa23cbcb2
     name: deployment-harvester
     type: application
     urls:
     - https://github.com/phamxuanduong/helm-charts/deployment-harvester-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-20T14:22:55.154579657+07:00"
+generated: "2024-09-20T14:52:33.43131301+07:00"
