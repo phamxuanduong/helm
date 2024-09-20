@@ -1,0 +1,32 @@
+repo: salala-api-bun
+branch: production
+
+configmap:
+  enabled: true
+  name: [dockerfile, env]
+  filename: [production, production]
+  fileurl: ["/app/Dockerfile", "/app/.env"]
+
+secret:
+  enabled: false
+  name: salala
+  filename: salala
+  fileurl: /home/pxd/helm/deployment/files/secret
+
+deployment:
+  replicas: 1
+  image: 192.168.1.10/salala-api-bun-production
+  tag: "1726651461"
+  port: 3000
+  
+service:
+  enabled: true
+  type: ClusterIP
+  port: 3000
+#  loadBalancerIP: 192.168.1.1
+
+ingress:
+  enabled: true
+  class: nginx
+  host: salala-test.hyratek.io
+  

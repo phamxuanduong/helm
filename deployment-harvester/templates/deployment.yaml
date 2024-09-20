@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.repo }}-{{ .Values.branch }}
+  labels:
+    app: {{ .Values.repo }}-{{ .Values.branch }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.repo }}-{{ .Values.branch }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.repo }}-{{ .Values.branch }}
+    spec:
+{{- if .Values.configmap.enabled }}
+      volumes:
+{{- range $index, $name := .Values.configmap.name }}
+      - name: {{ $name }}
+        configMap:
+          name: {{ $name }}
+{{- end }}
+{{- end }}
+#      volumes:
+#      - name: salala-api-bun-money-worker-public
+#        persistentVolumeClaim:
+#          claimName: salala-api-bun-money-worker-public
+      containers:
+      - name: {{ .Values.repo }}-{{ .Values.branch }}
+        image: {{ .Values.deployment.image }}:{{ .Values.deployment.tag }}
+        ports:
+        - containerPort: {{ .Values.deployment.port }}
+{{- if .Values.configmap.enabled }}
+        volumeMounts:
+{{- range $index, $name := .Values.configmap.name }}
+        - name: {{ $name }}
+          mountPath: {{ index $.Values.configmap.fileurl $index }}
+          subPath: {{ index $.Values.configmap.filename $index }}
+{{- end }}
+{{- end }}
+
+#        volumeMounts:
+#        - name: salala-api-bun-money-worker-public
+#          mountPath: /app/public
