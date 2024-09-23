@@ -1,0 +1,9 @@
+redis_stack_server:
+  enabled: true
+  name: salala-api-bun
+  image: "redis/redis-stack-server"
+  tag: "7.4.0-v0"
+  port: 6379
+  replicas: 1
+  password: gRVojIb0yZW8yaPX
+  efsID: fs-081e4f991e9913e9c

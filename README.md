@@ -1,3 +1,3 @@
 helm package /folder
 
-helm repo index ./charts/ --url https://github.com/phamxuanduong/helm/charts/
+helm repo index charts/ --url https://phamxuanduong.github.io/helm/charts

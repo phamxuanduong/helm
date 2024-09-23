@@ -1,0 +1,92 @@
+{{- if .Values.redis_stack_server.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.redis_stack_server.name }}-redis-stack-server
+spec:
+  capacity:
+    storage: 1  # Dùng EFS, cái này k có tác dụng
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.redis_stack_server.name }}-redis-stack-server
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: {{ .Values.redis_stack_server.efsID }}  # Thay YOUR-EFS-ID bằng ID của EFS
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.redis_stack_server.name }}-redis-stack-server
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.redis_stack_server.name }}-redis-stack-server
+  resources:
+    requests:
+      storage: 1  # Dùng EFS, cái này k có tác dụng
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.redis_stack_server.name }}-redis-stack-conf
+  namespace: {{ .Release.Namespace }}  # Hoặc namespace mà bạn đang sử dụng
+data:
+  redis-stack.conf: |
+    requirepass {{ .Values.redis_stack_server.password }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.redis_stack_server.name }}-redis-stack-server
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.redis_stack_server.name }}-redis-stack-server
+spec:
+  ports:
+  - port: {{ .Values.redis_stack_server.port }}
+    targetPort: 6379
+    name: db
+  type: ClusterIP
+  selector:
+    app: {{ .Values.redis_stack_server.name }}-redis-stack-server
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.redis_stack_server.name }}-redis-stack-server
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.redis_stack_server.name }}-redis-stack-server
+  serviceName: {{ .Values.redis_stack_server.name }}-redis-stack-server
+  replicas: {{ .Values.redis_stack_server.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.redis_stack_server.name }}-redis-stack-server
+    spec:
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Values.redis_stack_server.name }}-redis-stack-conf
+      - name: db
+        persistentVolumeClaim:
+          claimName: {{ .Values.redis_stack_server.name }}-redis-stack-server
+      containers:
+      - name: {{ .Values.redis_stack_server.name }}-redis-stack-server
+        image: {{ .Values.redis_stack_server.image }}:{{ .Values.redis_stack_server.tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.redis_stack_server.port }}
+          name: db
+        volumeMounts:
+        - name: config
+          mountPath: /redis-stack.conf
+          subPath: redis-stack.conf
+        - name: db
+          mountPath: /data
+{{- end }}
