@@ -26,7 +26,7 @@ spec:
       - name: {{ .Values.repo }}-{{ .Values.branch }}
         image: {{ .Values.deployment.image }}:{{ .Values.deployment.tag }}
 {{- if .Values.deployment.command }}
-        command: ["{{ .Values.deployment.command }}"]
+        command: {{ .Values.deployment.command | toJson }}
 {{- end }}
         ports:
         - containerPort: {{ .Values.deployment.port }}

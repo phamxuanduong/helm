@@ -3,9 +3,9 @@ entries:
   deployment-aws:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2024-09-24T14:33:59.94490824+07:00"
+    created: "2024-09-24T14:56:13.146504987+07:00"
     description: A Helm chart for Kubernetes
-    digest: 554cdb1dd2f2fd0e41074b70b0f2db23f7c3b9c8ce28bc4b168816c62c8cc6e2
+    digest: 856a20cefc98bd5fb97a8aadbb071acc45bd9d186ce07777dbba443e91be37fe
     name: deployment-aws
     type: application
     urls:
@@ -14,7 +14,7 @@ entries:
   deployment-harvester:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2024-09-24T14:33:59.946391208+07:00"
+    created: "2024-09-24T14:56:13.146976925+07:00"
     description: A Helm chart for Kubernetes
     digest: abfcfcbbce10bd4376ceb6b478ea39696a43276c5213ee40a09b4b0eb95d7520
     name: deployment-harvester
@@ -25,7 +25,7 @@ entries:
   redis-stack-aws:
   - apiVersion: v2
     appVersion: 7.4.0-v0
-    created: "2024-09-24T14:33:59.95324991+07:00"
+    created: "2024-09-24T14:56:13.147295331+07:00"
     description: A Helm chart for Kubernetes
     digest: 2e3441edd0874f2f4ec340416c1c4bc9afd9e280130fecf22431a2cb913dde9e
     name: redis-stack-aws
@@ -33,4 +33,4 @@ entries:
     urls:
     - https://phamxuanduong.github.io/helm/charts/redis-stack-aws/redis-stack-aws-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-24T14:33:59.944066395+07:00"
+generated: "2024-09-24T14:56:13.145632414+07:00"
