@@ -19,10 +19,10 @@ service:
   port: 3000
 #  Dùng nlb thì cần loại LoadBalancer và annotations bên dưới
 #  Dùng alb thì cần loại ClusterIP và Ingress
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: nlb
-    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-    service.beta.kubernetes.io/aws-load-balancer-internal: true
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+#    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+#    service.beta.kubernetes.io/aws-load-balancer-internal: true
 
 ingress:
   enabled: true
