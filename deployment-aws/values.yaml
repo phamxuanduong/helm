@@ -2,7 +2,7 @@ repo: github_repo_name
 branch: github_repo_branch
 
 configmap:
-  enabled: true
+  enabled: false
   name: [a, b, c, ...]                          # Tên của configmap trong k8s và trong deployment để mount vào pod
   filename: [a, b, c, ...]                      # Tên của file trong configmap
   fileurl: ["/app/a", "/app/b", "/app/c", ...]  # Đường dẫn của file khi được mount vào trong pod
@@ -17,9 +17,15 @@ service:
   enabled: true
   type: ClusterIP
   port: 3000
+#  Dùng nlb thì cần loại LoadBalancer và annotations bên dưới
+#  Dùng alb thì cần loại ClusterIP và Ingress
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-internal: true
 
 ingress:
   enabled: true
-  class: nginx
-  host: helm.pxd.com
-  
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip

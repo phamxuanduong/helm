@@ -3,17 +3,22 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.repo }}-{{ .Values.branch }}
+  {{- if .Values.ingress.annotations }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
 spec:
-  ingressClassName: {{ .Values.ingress.class }}
+  ingressClassName: alb
   rules:
-  - http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: {{ .Values.repo }}-{{ .Values.branch }}
-            port:
-              number: {{ .Values.service.port }}
-    host: {{ .Values.ingress.host }}
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.repo }}-{{ .Values.branch }}
+                port:
+                  number: {{ .Values.service.port }}
 {{- end }}
