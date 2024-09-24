@@ -11,6 +11,7 @@ deployment:
   replicas: 1
   image: image
   tag: "tag"                                    # Tag cần được để trong "" nếu là số
+  command: "bun run cronjob"
   port: 3000
   
 service:
