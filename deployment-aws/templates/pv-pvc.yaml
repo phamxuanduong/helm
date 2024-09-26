@@ -1,0 +1,29 @@
+{{- if .Values.volume.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volume.name }}  # Tên PersistentVolume
+spec:
+  capacity:
+    storage: "1Gi"  # Dung lượng mặc định cho PersistentVolume (dùng EFS nên không ảnh hưởng nhiều)
+  volumeMode: Filesystem  # Chế độ volume là file system
+  accessModes:
+    - {{ .Values.volume.accessModes }}  # Chế độ truy cập (ReadWriteMany)
+  persistentVolumeReclaimPolicy: Retain  # Chính sách giữ lại khi volume không còn dùng nữa
+  storageClassName: {{ .Values.volume.name }}  # Tên của storage class liên quan
+  csi:
+    driver: efs.csi.aws.com  # Dùng driver CSI của AWS EFS
+    volumeHandle: {{ .Values.volume.efsID }}  # ID của EFS (điền từ values.yaml)
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.volume.name }}  # Tên PVC tương tự PV
+spec:
+  accessModes:
+    - {{ .Values.volume.accessModes }}  # Chế độ truy cập
+  storageClassName: {{ .Values.volume.name }}  # Sử dụng cùng storage class như PersistentVolume
+  resources:
+    requests:
+      storage: "1Gi"  # Dung lượng yêu cầu cho PVC (cũng không ảnh hưởng với EFS)
+{{- end }}

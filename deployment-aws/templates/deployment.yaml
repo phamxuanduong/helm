@@ -1,53 +1,85 @@
+{{- if .Values.deployment.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.repo }}-{{ .Values.branch }}
+  name: {{ .Values.repo }}-{{ .Values.branch }}  # Tên của deployment được tạo từ repo và branch
   labels:
-    app: {{ .Values.repo }}-{{ .Values.branch }}
+    app: {{ .Values.repo }}-{{ .Values.branch }}  # Nhãn để chọn đúng đối tượng
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.deployment.replicas }}  # Số lượng bản sao của pod
   selector:
     matchLabels:
-      app: {{ .Values.repo }}-{{ .Values.branch }}
+      app: {{ .Values.repo }}-{{ .Values.branch }}  # Chọn pod dựa trên nhãn
   template:
     metadata:
       labels:
-        app: {{ .Values.repo }}-{{ .Values.branch }}
+        app: {{ .Values.repo }}-{{ .Values.branch }}  # Gán nhãn cho pod
     spec:
-{{- if .Values.configmap.enabled }}
-      volumes:
-{{- range $index, $name := .Values.configmap.name }}
-      - name: {{ $name }}
-        configMap:
-          name: {{ $name }}
-{{- end }}
-{{- end }}
+      {{- if or .Values.configmap.enabled .Values.volume.enabled }}
+      volumes:  # Khai báo volumes nếu có configmap hoặc volume được bật
+        {{- if .Values.configmap.enabled }}
+        {{- range $index, $name := .Values.configmap.name }}
+        - name: {{ $name }}  # Tên volume lấy từ configmap
+          configMap:
+            name: {{ $name }}  # Tạo volume từ configmap có cùng tên
+        {{- end }}
+        {{- end }}
+
+        {{- if .Values.volume.enabled }}
+        - name: {{ .Values.volume.name }}  # Tên volume từ PersistentVolumeClaim
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.name }}  # Liên kết với PVC đã tạo
+        {{- end }}
+      {{- end }}
+
       containers:
-      - name: {{ .Values.repo }}-{{ .Values.branch }}
-        image: {{ .Values.deployment.image }}:{{ .Values.deployment.tag }}
-{{- if .Values.deployment.command }}
-        command: {{ .Values.deployment.command | toJson }}
-{{- end }}
+      - name: {{ .Values.repo }}-{{ .Values.branch }}  # Tên container cũng dựa trên repo và branch
+        image: {{ .Values.deployment.image }}:{{ quote .Values.deployment.tag }}  # Hình ảnh và tag từ values.yaml
+        {{- if .Values.deployment.command }}
+        command: {{ .Values.deployment.command | toJson }}  # Nếu có command, nó sẽ được render tại đây
+        {{- end }}
         ports:
-        - containerPort: {{ .Values.deployment.port }}
-{{- if .Values.configmap.enabled }}
-        volumeMounts:
-{{- range $index, $name := .Values.configmap.name }}
-        - name: {{ $name }}
-          mountPath: {{ index $.Values.configmap.fileurl $index }}
-          subPath: {{ index $.Values.configmap.filename $index }}
-{{- end }}
-{{- end }}
-{{- if .Values.deployment.resources }}
-        resources:
-{{- if .Values.deployment.resources.requests }}
-          requests:
-            cpu: {{ .Values.deployment.resources.requests.cpu }}
-            memory: {{ .Values.deployment.resources.requests.memory }}
-{{- end }}
-{{- if .Values.deployment.resources.limits }}
-          limits:
-            cpu: {{ .Values.deployment.resources.limits.cpu }}
-            memory: {{ .Values.deployment.resources.limits.memory }}
-{{- end }}
+        - containerPort: {{ .Values.deployment.port }}  # Cổng container
+
+        {{- if or .Values.configmap.enabled .Values.volume.enabled }}
+        volumeMounts:  # Mount các volumes vào container
+          {{- if .Values.configmap.enabled }}
+          {{- range $index, $name := .Values.configmap.name }}
+          - name: {{ $name }}  # Mount configmap vào pod
+            mountPath: {{ index $.Values.configmap.fileurl $index }}  # Đường dẫn mount
+            subPath: {{ index $.Values.configmap.filename $index }}  # File sẽ được mount từ configmap
+          {{- end }}
+          {{- end }}
+
+          {{- if .Values.volume.enabled }}
+          {{- range $index, $mountPath := .Values.volume.mountPath }}
+          - name: {{ $.Values.volume.name }}  # Mount PersistentVolume vào container
+            mountPath: {{ $mountPath }}  # Đường dẫn mount PersistentVolume
+            subPath: {{ index $.Values.volume.subPath $index }}  # Đường dẫn cụ thể trong volume
+          {{- end }}
+          {{- end }}
+        {{- end }}
+
+        {{- if .Values.deployment.resources }}
+        resources:  # Định nghĩa tài nguyên yêu cầu và giới hạn nếu có
+          {{- if .Values.deployment.resources.requests }}
+          requests:  # Yêu cầu tối thiểu cho container
+            {{- if .Values.deployment.resources.requests.cpu }}
+            cpu: {{ .Values.deployment.resources.requests.cpu }}  # Yêu cầu CPU
+            {{- end }}
+            {{- if .Values.deployment.resources.requests.memory }}
+            memory: {{ .Values.deployment.resources.requests.memory }}  # Yêu cầu bộ nhớ
+            {{- end }}
+          {{- end }}
+
+          {{- if .Values.deployment.resources.limits }}
+          limits:  # Giới hạn tối đa cho container
+            {{- if .Values.deployment.resources.limits.cpu }}
+            cpu: {{ .Values.deployment.resources.limits.cpu }}  # Giới hạn CPU
+            {{- end }}
+            {{- if .Values.deployment.resources.limits.memory }}
+            memory: {{ .Values.deployment.resources.limits.memory }}  # Giới hạn bộ nhớ
+            {{- end }}
+          {{- end }}
+        {{- end }}
 {{- end }}
