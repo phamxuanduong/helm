@@ -38,3 +38,16 @@ spec:
           subPath: {{ index $.Values.configmap.filename $index }}
 {{- end }}
 {{- end }}
+{{- if .Values.deployment.resources }}
+        resources:
+{{- if .Values.deployment.resources.requests }}
+          requests:
+            cpu: {{ .Values.deployment.resources.requests.cpu }}
+            memory: {{ .Values.deployment.resources.requests.memory }}
+{{- end }}
+{{- if .Values.deployment.resources.limits }}
+          limits:
+            cpu: {{ .Values.deployment.resources.limits.cpu }}
+            memory: {{ .Values.deployment.resources.limits.memory }}
+{{- end }}
+{{- end }}
