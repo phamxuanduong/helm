@@ -17,6 +17,7 @@ volume:
 
 deployment:
   enabled: true  # Bật/tắt deployment
+#  name: custom-deployment-name  # Tên tùy chỉnh cho deployment (nếu có)
   replicas: 1  # Số lượng replicas của pod
   image: image  # Tên image để triển khai
   tag: "tag"  # Tag của image

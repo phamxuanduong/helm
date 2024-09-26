@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.repo }}-{{ .Values.branch }}  # Tên của deployment được tạo từ repo và branch
+  name: {{ .Values.deployment.name | default (printf "%s-%s" .Values.repo .Values.branch) }}  # Nếu có giá trị deployment.name trong values.yaml, dùng nó; nếu không dùng repo-branch
   labels:
     app: {{ .Values.repo }}-{{ .Values.branch }}  # Nhãn để chọn đúng đối tượng
 spec:
