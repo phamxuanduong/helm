@@ -20,7 +20,7 @@ deployment:
 #  name: custom-deployment-name  # Tên tùy chỉnh cho deployment (nếu có)
   replicas: 1  # Số lượng replicas của pod
   image: image  # Tên image để triển khai
-  tag: "tag"  # Tag của image
+  tag: tag  # Tag của image
 #  command: ["bun", "run", "cluster"]  # Command nếu có
   port: 3000  # Cổng container
 #  resources:
