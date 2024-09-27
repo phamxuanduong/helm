@@ -14,7 +14,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /  # Định nghĩa đường dẫn mặc định cho ingress
+          - path: {{ .Values.ingress.path | default "/" }}  # Sử dụng path từ values.yaml nếu có; nếu không, mặc định là "/"
             pathType: Prefix  # Sử dụng kiểu đường dẫn Prefix
             backend:
               service:

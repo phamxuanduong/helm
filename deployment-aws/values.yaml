@@ -16,7 +16,7 @@ volume:
   subPath: [a, b, c]  # Đường dẫn con cụ thể trong volume
 
 deployment:
-  enabled: true  # Bật/tắt deployment
+  enabled: false  # Bật/tắt deployment
 #  name: custom-deployment-name  # Tên tùy chỉnh cho deployment (nếu có)
   replicas: 1  # Số lượng replicas của pod
   image: image  # Tên image để triển khai
@@ -32,7 +32,7 @@ deployment:
 #      memory: "512Mi"  # Giới hạn bộ nhớ
 
 service:
-  enabled: true  # Bật/tắt service
+  enabled: false  # Bật/tắt service
 #  name: custom-service-name  # Tên tùy chỉnh cho service (nếu có)
   type: ClusterIP  # Kiểu service (ClusterIP, LoadBalancer, etc.)
   port: 3000  # Cổng service bên ngoài
@@ -43,10 +43,11 @@ service:
 #    service.beta.kubernetes.io/aws-load-balancer-internal: true
 
 ingress:
-  enabled: true  # Bật/tắt ingress
+  enabled: false  # Bật/tắt ingress
 #  name: custom-ingress-name  # Tên tùy chỉnh cho ingress (nếu có)
 #  serviceName: custom-service-name  # Tên tùy chỉnh cho service backend của ingress (nếu có)
 #  port: 80  # Cổng của ingress (nếu khác với cổng của service)
+#  path: "/my-custom-path"  # Đường dẫn tùy chỉnh cho ingress (nếu có)
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing  # Định nghĩa schema cho ALB
     alb.ingress.kubernetes.io/target-type: ip  # Loại mục tiêu là IP
