@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.volume.name }}  # Tên PersistentVolume
 spec:
   capacity:
-    storage: "1Gi"  # Dung lượng mặc định cho PersistentVolume (dùng EFS nên không ảnh hưởng nhiều)
+    storage: "1"  # Dung lượng mặc định cho PersistentVolume (dùng EFS nên không ảnh hưởng nhiều)
   volumeMode: Filesystem  # Chế độ volume là file system
   accessModes:
     - {{ .Values.volume.accessModes }}  # Chế độ truy cập (ReadWriteMany)
@@ -25,5 +25,5 @@ spec:
   storageClassName: {{ .Values.volume.name }}  # Sử dụng cùng storage class như PersistentVolume
   resources:
     requests:
-      storage: "1Gi"  # Dung lượng yêu cầu cho PVC (cũng không ảnh hưởng với EFS)
+      storage: "1"  # Dung lượng yêu cầu cho PVC (cũng không ảnh hưởng với EFS)
 {{- end }}
