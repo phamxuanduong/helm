@@ -43,7 +43,7 @@ service:
 #    service.beta.kubernetes.io/aws-load-balancer-internal: true
 
 ingress:
-  enabled: false  # Bật/tắt ingress
+  enabled: true  # Bật/tắt ingress
 #  name: custom-ingress-name  # Tên tùy chỉnh cho ingress (nếu có)
 #  serviceName: custom-service-name  # Tên tùy chỉnh cho service backend của ingress (nếu có)
 #  port: 80  # Cổng của ingress (nếu khác với cổng của service)
