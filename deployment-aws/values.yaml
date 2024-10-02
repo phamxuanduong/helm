@@ -47,6 +47,7 @@ ingress:
 #  name: custom-ingress-name  # Tên tùy chỉnh cho ingress (nếu có)
 #  serviceName: custom-service-name  # Tên tùy chỉnh cho service backend của ingress (nếu có)
 #  port: 80  # Cổng của ingress (nếu khác với cổng của service)
+#  host: example.com  # Tên miền được định nghĩa cho Ingress
 #  path: "/my-custom-path"  # Đường dẫn tùy chỉnh cho ingress (nếu có)
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing  # Định nghĩa schema cho ALB

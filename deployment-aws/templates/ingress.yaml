@@ -12,7 +12,10 @@ metadata:
 spec:
   ingressClassName: alb  # Sử dụng ALB làm ingress controller
   rules:
-    - http:
+    - {{- if .Values.ingress.host }}  # Nếu có host trong values.yaml, thêm nó vào
+      host: {{ .Values.ingress.host }}  # Định nghĩa host cho ingress nếu có
+      {{- end }}
+      http:
         paths:
           - path: {{ .Values.ingress.path | default "/" }}  # Sử dụng path từ values.yaml nếu có; nếu không, mặc định là "/"
             pathType: Prefix  # Sử dụng kiểu đường dẫn Prefix
