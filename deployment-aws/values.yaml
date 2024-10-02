@@ -3,26 +3,26 @@ branch: github_repo_branch  # Tên nhánh (thay bằng nhánh thực tế)
 
 configmap:
   enabled: false  # Kích hoạt configmap
-  name: [a, b, c]  # Tên của configmap sẽ được mount vào pod
-  filename: [a, b, c]  # Tên file trong configmap
-  fileurl: ["/app/a", "/app/b", "/app/c"]  # Đường dẫn file sẽ được mount vào pod
+#  name: [a, b, c]  # Tên của configmap sẽ được mount vào pod
+#  filename: [a, b, c]  # Tên file trong configmap
+#  fileurl: ["/app/a", "/app/b", "/app/c"]  # Đường dẫn file sẽ được mount vào pod
 
 volume:
   enabled: false  # Kích hoạt PersistentVolume và PersistentVolumeClaim
-  name: test  # Tên của PersistentVolume và PersistentVolumeClaim
-  accessModes: ReadWriteMany  # Chế độ truy cập của volume
-  efsID: fs-xxxxxxxxxxxxxxxxx  # ID của EFS trong AWS
-  mountPath: ["/app/a", "/app/b", "/app/c"]  # Đường dẫn mount PersistentVolume vào container
-  subPath: [a, b, c]  # Đường dẫn con cụ thể trong volume
+#  name: test  # Tên của PersistentVolume và PersistentVolumeClaim
+#  accessModes: ReadWriteMany  # Chế độ truy cập của volume
+#  efsID: fs-xxxxxxxxxxxxxxxxx  # ID của EFS trong AWS
+#  mountPath: ["/app/a", "/app/b", "/app/c"]  # Đường dẫn mount PersistentVolume vào container
+#  subPath: [a, b, c]  # Đường dẫn con cụ thể trong volume
 
 deployment:
   enabled: false  # Bật/tắt deployment
 #  name: custom-deployment-name  # Tên tùy chỉnh cho deployment (nếu có)
-  replicas: 1  # Số lượng replicas của pod
-  image: image  # Tên image để triển khai
-  tag: "tag"  # Tag của image
+#  replicas: 1  # Số lượng replicas của pod
+#  image: image  # Tên image để triển khai
+#  tag: "tag"  # Tag của image
 #  command: ["bun", "run", "cluster"]  # Command nếu có
-  port: 3000  # Cổng container
+#  port: 3000  # Cổng container
 #  resources:
 #    requests:
 #      cpu: "500m"  # Yêu cầu CPU
@@ -34,8 +34,8 @@ deployment:
 service:
   enabled: false  # Bật/tắt service
 #  name: custom-service-name  # Tên tùy chỉnh cho service (nếu có)
-  type: ClusterIP  # Kiểu service (ClusterIP, LoadBalancer, etc.)
-  port: 3000  # Cổng service bên ngoài
+#  type: ClusterIP  # Kiểu service (ClusterIP, LoadBalancer, etc.)
+#  port: 3000  # Cổng service bên ngoài
 #  targetPort: 8080  # Cổng mục tiêu bên trong pod (nếu khác với cổng container)
 #  annotations:
 #    service.beta.kubernetes.io/aws-load-balancer-type: nlb  # Annotations cho NLB nếu cần
@@ -43,12 +43,16 @@ service:
 #    service.beta.kubernetes.io/aws-load-balancer-internal: true
 
 ingress:
-  enabled: true  # Bật/tắt ingress
+  enabled: false  # Bật/tắt ingress
 #  name: custom-ingress-name  # Tên tùy chỉnh cho ingress (nếu có)
 #  serviceName: custom-service-name  # Tên tùy chỉnh cho service backend của ingress (nếu có)
 #  port: 80  # Cổng của ingress (nếu khác với cổng của service)
+#  tls:
+#    hosts:
+#      - "example.com"
 #  host: "example.com"  # Tên miền được định nghĩa cho Ingress
 #  path: "/my-custom-path"  # Đường dẫn tùy chỉnh cho ingress (nếu có)
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing  # Định nghĩa schema cho ALB
-    alb.ingress.kubernetes.io/target-type: ip  # Loại mục tiêu là IP
+#  annotations:
+#    alb.ingress.kubernetes.io/scheme: internet-facing  # Định nghĩa schema cho ALB
+#    alb.ingress.kubernetes.io/target-type: ip  # Loại mục tiêu là IP
+#    alb.ingress.kubernetes.io/certificate-arn: "arn-certificate"

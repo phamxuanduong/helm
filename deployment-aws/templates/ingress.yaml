@@ -11,6 +11,13 @@ metadata:
   {{- end }}
 spec:
   ingressClassName: alb  # Sử dụng ALB làm ingress controller
+  {{- if .Values.ingress.tls }}  # Thêm phần cấu hình TLS nếu có giá trị trong values.yaml
+  tls:
+    - hosts:
+        {{- range .Values.ingress.tls.hosts }}
+        - {{ . | quote }}
+        {{- end }}
+  {{- end }}
   rules:
     - {{- if .Values.ingress.host }}  # Nếu có host trong values.yaml, thêm nó vào
       host: {{ .Values.ingress.host | quote }}  # Định nghĩa host cho ingress nếu có
